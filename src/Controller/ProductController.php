@@ -29,26 +29,13 @@ class ProductController extends AbstractController
         $products = $prodRepository->findByCategoryId($id);
         $cat = $catRepository->find($id);
         
-        if(!$products)
+        if(!$cat)
            throw new NotFoundHttpException();
 
         return $this->render('product/productCat.html.twig',[
             'products' => $products,
-            'cname' => $cat->getName()
+            'cat' => $cat
         ]);
     }
 
-
-
-    public function getCategories(CategoryRepository $catRepository): Response
-    {
-        $cats = $catRepository->findAll();
-        $response =  $this->render('layout/_cats.html.twig', [
-            'categories' => $cats]);
-
-        $response->setPublic();
-        $response->setMaxAge(600);
-
-        return $response;
-    }
 }

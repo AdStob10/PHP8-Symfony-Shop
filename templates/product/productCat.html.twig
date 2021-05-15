@@ -1,22 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/_extBaseCat.html.twig' %}
 
-{% block title %}E-Shop - {{ cname }}{% endblock %}
+{% block title %}E-Shop - {{ cat.name }}{% endblock %}
 
-{% block body %}
+{% block content %}
 <style>
     .title-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
 </style>
 
-<div class='row'>
-
-    <div class='col-sm-2'>
-          {{ render_esi(controller(
-        'App\\Controller\\ProductController::getCategories')) }}
-    </div>
-    <div class='col-sm-10'>
-        <div class="586742-wrapper">
-        <header>
-            <h1>{{ cname }}</h1>
+    <div class="title-wrapper">
+        <header class='mb-3'>
+            <h1>{{ cat.name }}</h1>
+            <p>{{  cat.description }} </p>
+            {% if is_granted('ROLE_EMPLOYEE') %}
+                    <a class='btn btn-info' href='{{ path('editcat', {id: cat.id})}}'>Edit category</a>
+                    <a class='btn btn-danger' href='{{ path('delcat', {id: cat.id})}}'>Delete category</a>
+            {% endif %}
         </header>
         <div class='conatiner overflow-hidden'>
             <div class="row row-cols-1 row-cols-md-3 g-6">
@@ -35,7 +33,5 @@
             {% endfor %}
             </div>
         </div>
-        </div>
     </div>
-</div>
 {% endblock %}

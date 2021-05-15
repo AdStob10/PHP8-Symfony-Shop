@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop - Edit {{ cname }}{% endblock %}
+
+{% block body %}
+
+<div class='d-flex'>
+
+    <div class='mr-5'>
+          {{ render_esi(controller(
+        'App\\Controller\\CategoryController::getCategories')) }}
+    </div>
+    <div class='flex-fill text-center' style='padding-left:10%;padding-right:10%;'>
+
+        <h1 class='mb-3'>Delete category - {{ cname }}</h1>
+        <p class='text-danger fs-3 fw-bolder'>Are you sure you want to delete this category?<br></p>
+        <div class='text-center px-5 w-30'>
+        {{ form_start(form) }}
+        {{ form_widget(form.Delete, {'attr': {'class': 'btn-danger'}}) }}
+        {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

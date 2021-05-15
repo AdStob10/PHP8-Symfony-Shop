@@ -1,11 +1,16 @@
-<div class='d-flex flex-column p-4 bg-light rounded-lg'>
-    <h4 class='display-6 mx-auto'>Kategorie</h4>
+<div class='navbar flex-column p-4 bg-light rounded-lg'>
+    <h4 class='display-6 mx-auto'>Categories</h4>
         <hr class='w-100'/>
-            <ul class='nav nav-pills nav-fill flex-column mb-auto'>
+            <ul class='navbar-nav nav-pills nav-fill mb-auto'>
                 {% for c in categories %}
                 <li class='nav-item'> 
                         <a href="{{ path('category', {id: c.id}) }}" class="nav-link text-black">{{c.name}}</a>
                 </li>
                 {% endfor %}
+                {% if is_granted('ROLE_EMPLOYEE') %}
+                    <li class='nav-item'> 
+                        <a href="{{ path('addcat') }}" class="text-info">Add new category...</a>
+                   </li>
+                {% endif %}
             </ul>
 </div>

@@ -1,42 +1,29 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/_extBaseCat.html.twig' %}
 
 {% block title %}E-Shop - {{ prod.name }}{% endblock %}
 
-{% block body %}
+{% block content %}
 <style>
     .title-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
 </style>
 
-<div class='row'>
 
-    <div class='col-sm-2'>
-          {{ render_esi(controller(
-        'App\\Controller\\ProductController::getCategories')) }}
-    </div>
-    <div class='col-sm-10'>
-        <div class='conatiner overflow-hidden'>
-            <div class="row g-6">
-                <div class = 'col-sm-6'>
+    <div>
+            <div>
                     <img src="{{ asset('img/products/' ~ prod.imageFileName)}}"  alt="...">
-                </div>
-                <div class = 'col-sm-6 d-flex flex-column justify-content-around'>
-                    <div class='row'>
-                        <div class='col-sm-12 text-center'>
+            </div>
+            <div>
+                    <div class='text-center mb-5'>
                         <h1>{{ prod.name }}</h1>
                         <h4 class='text-muted'> {{ prod.price }}$ </h1>
                         <a href='#' class='btn btn-outline-dark mt-3'>Add to cart</a>
-                        </div>
                     </div>
-                    <div class='row'>
-                        <div class='col-sm-12'>
+                    <div>
                         <h4 class='text-center'>Description</h4>
                         <p> {{ prod.Description }}</p>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
     </div>
-</div>
+
 {% endblock %}

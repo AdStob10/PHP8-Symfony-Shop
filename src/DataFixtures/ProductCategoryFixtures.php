@@ -13,6 +13,7 @@ class ProductCategoryFixtures extends Fixture
     {
         $category = new Category();
         $category->setName("Elektronika");
+        $category->setDescription("Electronical stuff: phones, laptops etc.");
 
         $product = new Product();
         $product->setName("Smartfon");

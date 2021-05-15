@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop - Home{% endblock %}
+
+{% block body %}
+<div class='d-flex'>
+
+    <div class='mr-5'>
+          {{ render_esi(controller(
+        'App\\Controller\\CategoryController::getCategories')) }}
+    </div>
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop - Edit {{ cname }}{% endblock %}
+
+{% block body %}
+
+<div class='d-flex'>
+
+    <div class='mr-5'>
+          {{ render_esi(controller(
+        'App\\Controller\\CategoryController::getCategories')) }}
+    </div>
+    <div class='flex-fill text-center' style='padding-left:10%;padding-right:10%;'>
+
+        <h1 class='mb-3'>Edit category - {{ cname }}</h1>
+        <div class='text-center px-5 w-30'>
+        {{ form(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
