@@ -1,0 +1,11 @@
+<div class='d-flex flex-column p-4 bg-light rounded-lg'>
+    <h4 class='display-6 mx-auto'>Kategorie</h4>
+        <hr class='w-100'/>
+            <ul class='nav nav-pills nav-fill flex-column mb-auto'>
+                {% for c in categories %}
+                <li class='nav-item'> 
+                        <a href="{{ path('category', {id: c.id}) }}" class="nav-link text-black">{{c.name}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+</div>
