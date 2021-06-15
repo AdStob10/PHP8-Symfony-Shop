@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop  - Orders {% endblock %}
+
+{% block body %}
+
+<h1 class='text-center display-4'>Fill order data</h1>
+<hr class='w-100' />
+<div class='container-sm w-50 text-center'>
+ {{ form_start(form) }}
+<div class='my-5'>
+        <h3> Personal data</h3>
+        {{ form_row(form.clientName,{'attr':{'class':'w-50  mx-auto'}}) }}
+        </div>
+<div class='my-5'>
+        <h3> Address data</h3>
+        {{ form_row(form.clientStreet,{'attr':{'class':'w-50 mx-auto'}}) }}
+        {{ form_row(form.clientCountry,{'attr':{'class':'w-50 mx-auto'}}) }}
+         {{ form_row(form.clientCity,{'attr':{'class':'w-25 mx-auto'}}) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.clientPostcode,{'attr':{'class':'w-25 mx-auto'}}) }}    
+</div>
+        {{ form_row(form.create) }}
+</div>
+{{ form_end(form) }}
+{% endblock %}

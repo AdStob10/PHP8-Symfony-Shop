@@ -12,7 +12,7 @@ class ProductCategoryFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $category = new Category();
-        $category->setName("Elektronika");
+        $category->setName("Electronic");
         $category->setDescription("Electronical stuff: phones, laptops etc.");
 
         $product = new Product();
@@ -24,6 +24,17 @@ class ProductCategoryFixtures extends Fixture
         $manager->persist($product);
 
         $category->addProduct($product);
+
+        for($i = 1; $i < 13; $i++)
+        {
+            $product = new Product();
+            $product->setName("TEST");
+            $product->setDescription("TEST");
+            $product->setPrice("1");
+            $manager->persist($product);
+            $category->addProduct($product);
+        }
+
         $manager->persist($category);
         
         $manager->flush();

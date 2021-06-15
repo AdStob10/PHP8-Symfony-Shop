@@ -4,7 +4,7 @@
             <ul class='navbar-nav nav-pills nav-fill mb-auto'>
                 {% for c in categories %}
                 <li class='nav-item'> 
-                        <a href="{{ path('category', {id: c.id}) }}" class="nav-link text-black">{{c.name}}</a>
+                        <a href="{{ path('category', {id: c.id, catname:c.name}) }}" class="nav-link text-black">{{c.name}}</a>
                 </li>
                 {% endfor %}
                 {% if is_granted('ROLE_EMPLOYEE') %}

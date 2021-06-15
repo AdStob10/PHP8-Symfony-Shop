@@ -19,6 +19,24 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function transferProducts($idFrom, $catTo)
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery('UPDATE App\Entity\Product p SET p.category = :dest WHERE p.category = :source')
+                    ->setParameter(":source", $idFrom)
+                    ->setParameter(':dest', $catTo)
+                    ->execute();
+    }
+
+    
+    /*public function findWithout(int $id)
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery('SELECT c FROM App\Entity\Category c WHERE c.id NOT IN (:cur)')
+                    ->setParameter(':cur',$id)
+                    ->getResult();
+    }
+    */
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */

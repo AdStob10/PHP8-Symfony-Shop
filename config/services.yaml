@@ -4,7 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-
+    images_directory: '%kernel.project_dir%/public/img/products'
+    bestsellers_max: 10
+    product_page_count: 12
+    order_page_count: 10
+    manage_page_count: 15
 services:
     # default configuration for services in *this* file
     _defaults:

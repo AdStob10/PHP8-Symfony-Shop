@@ -25,19 +25,18 @@ class Category
      * @ORM\Column(type="string", length=100)
      */
     #[Assert\NotBlank]
-    #[Assert\Length(min: 10)]
+    #[Assert\Length(min: 5)]
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
 
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 20)]
+
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category", cascade = {"remove"})
      */
     private $products;
 

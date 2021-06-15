@@ -3,14 +3,27 @@
     <a class='navbar-brand' href='{{ path('home') }}'>E-Shop</a>
         <div class="collapse navbar-collapse">
             <ul class='navbar-nav me-auto'>
+                {% if is_granted('ROLE_CLIENT') %}
                 <li class='nav-item'>
-                    <a class='nav-link' href='#'>Example Link</a>
+                    <a class='nav-link' href='{{ path('orders') }}'>My Orders</a>
                 </li>
+                <li class='nav-item'>
+                    <a class='nav-link' href='{{ path('bestsellers') }}'>Bestsellers</a>
+                </li>
+                 {% endif %}
+                {% if is_granted('ROLE_EMPLOYEE') %}
+                <li class='nav-item'>
+                    <a class='nav-link' href='{{ path('manage_orders') }}'>Manage Orders</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     <div class='text-end'>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class='d-flex'>
+            {% if is_granted('ROLE_CLIENT') %}
+                <span><a class='nav-link' href='{{ path('cart') }}'>Cart</a></span>
+            {% endif %}
             <span class='navbar-text px-3'>{{app.user.email}}</span>
             <a href='{{ path('app_logout') }}' class='btn btn-md btn-outline-danger px-3' role='button'>Logout</a>
         </div>

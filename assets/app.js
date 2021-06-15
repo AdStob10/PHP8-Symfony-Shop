@@ -9,7 +9,10 @@
 import './styles/app.scss';
 
 
+const $ = require('jquery');
+
+global.$ = global.jQuery = $;
+
 // start the Stimulus application
 import './bootstrap';
-
 

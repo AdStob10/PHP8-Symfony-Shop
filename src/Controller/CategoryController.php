@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\DeleteCategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CategoryRepository;
+use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,14 +20,14 @@ class CategoryController extends AbstractController
 {
 
     
-    #[Route('/addcat', name: 'addcat')]
+    #[Route('/cat/add', name: 'addcat')]
     public function add(Request $request): Response
     {
         $cat = new Category();
 
         $form = $this->createFormBuilder($cat)
                 ->add('name',TextType::class)
-                ->add('description', TextareaType::class)
+                ->add('description', TextareaType::class, ['required' => false])
                 ->add('add', SubmitType::class)
                 ->getForm();
 
@@ -48,11 +51,12 @@ class CategoryController extends AbstractController
     }
 
 
-    #[Route('/editcat/{id}', name: 'editcat', requirements: ['id' => '\d+'])]
+    #[Route('/cat/edit/{id}', name: 'editcat', requirements: ['id' => '\d+'])]
     public function edit(int $id, Request $request): Response
     {
         $man = $this->getDoctrine()->getManager();
         $cat = $man->getRepository(Category::class)->find($id);
+        $cname = $cat->getName();
 
         if(!$cat)
         throw new NotFoundHttpException();
@@ -79,39 +83,36 @@ class CategoryController extends AbstractController
 
         return $this->render('category/edit.html.twig', [
             'form' => $form->createView(),
-            'cname' => $cat->getName()
+            'cname' => $cname
         ]);
     }
 
 
-    #[Route('/delcat/{id}', name: 'delcat', requirements: ['id' => '\d+'])]
-    public function delete(int $id, Request $request): Response
+    #[Route('/cat/delete/{id}', name: 'delcat', requirements: ['id' => '\d+'])]
+    public function delete(int $id, Request $request, CategoryRepository $catRepository, LoggerInterface $logger): Response
     {
-        $man = $this->getDoctrine()->getManager();
-        $cat = $man->getRepository(Category::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $cat = $catRepository->find($id);
 
         if(!$cat)
             throw new NotFoundHttpException();
-
-        $form = $this->createFormBuilder($cat)
-                ->add('Delete', SubmitType::class)
-                ->getForm();
-
+        
+        $form = $this->createForm(DeleteCategoryType::class, $cat,['notId' => $id]);
         $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                
+                $transferCat = $form->get('categories')->getData();
 
-        if($form->isSubmitted())
-        {
+                if ($transferCat && $transferCat->getId() != $id)
+                 $catRepository->transferProducts($cat, $transferCat);
 
-            $man->remove($cat);
-            $man->flush();
-
-            return $this->redirectToRoute("home");
-
-        }
-
+                $em->remove($cat);
+                $em->flush();
+                return $this->redirectToRoute('home');
+            }
         return $this->render('category/delete.html.twig', [
-            'form' => $form->createView(),
-            'cname' => $cat->getName()
+            'category' => $cat,
+            'form' => $form->createView()
         ]);
     }
     

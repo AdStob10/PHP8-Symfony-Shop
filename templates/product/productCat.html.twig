@@ -5,6 +5,7 @@
 {% block content %}
 <style>
     .title-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .custom-border-dark:hover { border-color: #343a40!important;}
 </style>
 
     <div class="title-wrapper">
@@ -14,24 +15,72 @@
             {% if is_granted('ROLE_EMPLOYEE') %}
                     <a class='btn btn-info' href='{{ path('editcat', {id: cat.id})}}'>Edit category</a>
                     <a class='btn btn-danger' href='{{ path('delcat', {id: cat.id})}}'>Delete category</a>
+                    <a class='btn btn-warning' href='{{ path('add_prod')}}'>Add product</a>
             {% endif %}
+            <div class='d-flex justify-content-between'>
+                <div>
+                    {{ form_start(form, {'attr': {'class': 'form-inline w-100'}}) }}
+                        {{ form_widget(form.searchString ,{'attr': {'class': 'm-2 w-50'}}) }}
+                        {{ form_widget(form.search ,{'attr': {'class': 'btn btn-outline-dark'}}) }}
+                    {{ form_end(form) }}
+                </div>
+                <div class="dropdown text-right">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if order == 'pa' %}
+                            Price: Low to High
+                        {% elseif order == 'pd' %}
+                            Price: High to Low
+                        {% elseif order == 'na' %}
+                            Name A-Z
+                        {% elseif order == 'nd' %}
+                            Name Z-A
+                        {% else %}
+                            Sort
+                        {% endif %}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ path('category', {id: cat.id, catname: cat.name, pg: page, ord: 'pa' } ) }}">Price: Low to High</a>
+                            <a class="dropdown-item" href="{{ path('category', {id: cat.id, catname: cat.name, pg: page, ord: 'pd' } ) }}">Price: High to Low</a>
+                            <a class="dropdown-item" href="{{ path('category', {id: cat.id, catname: cat.name, pg: page, ord: 'na' } ) }}">Name A-Z</a>
+                            <a class="dropdown-item" href="{{ path('category', {id: cat.id, catname: cat.name, pg: page, ord: 'nd' } ) }}">Name Z-A</a>
+                    </div>
+                </div>
+            </div>
         </header>
         <div class='conatiner overflow-hidden'>
             <div class="row row-cols-1 row-cols-md-3 g-6">
             {% for p in products %}
                 <div class="col pb-3 d-flex flex-column text-center">
-                    <div class='card h-100 w-100 border-dark' >
-                    <img src="{{ asset('img/products/' ~ p.imageFileName)}}" class="card-img-top" alt="...">
+                    <div class='card h-100 w-100 custom-border-dark' >
+                    {% if p.imageFileName is empty %}
+                        <img src="{{ asset('img/products/no-image.png')}}" class="card-img-top" alt="...">
+                    {% else %}
+                        <img src="{{ asset('img/products/' ~ p.imageFileName)}}" class="card-img-top" alt="...">
+                    {% endif %}
                         <div class='card-body'>
                             <h3 class='card-title'>{{ p.name }}</h3>
-                            <a href="{{ path('product', {id: p.id}) }}" class='stretched-link'></a>
+                            <a href="{{ path('product', {id: p.id, name: p.name}) }}" class='stretched-link'></a>
                         </div>
                         <div class='card-footer'>{{ p.price }}$</div>
                     </div>
-                    <a class='btn btn-outline-secondary'>Add to cart</a>
+                    <!-- <a class='btn btn-outline-secondary'>Add to cart</a>-->
                 </div>
             {% endfor %}
             </div>
+            <div class="text-center mt-3">
+            {% if page-1 > 0 %}
+            <a href="{{ path('category', {id: cat.id, catname: cat.name, pg: (page - 1), ord: order } ) }}" class='btn btn-secondary'><<</a>
+            {% else %}
+            <a href="{{ path('category', {id: cat.id, catname: cat.name, pg: (page - 1), ord: order } ) }}" class='btn btn-secondary disabled'><<</a>    
+            {% endif %}
+            <span class='mx-2'>{{ page }}</span>
+            {% if maxpages > page %}
+            <a href="{{ path('category', {id: cat.id, catname: cat.name, pg: (page + 1), ord: order } ) }}" class='btn btn-secondary'>>></a>
+            {% else %}
+            <a href="{{ path('category', {id: cat.id, catname: cat.name, pg: (page + 1), ord: order } ) }}" class='btn btn-secondary disabled'>>></a> 
+            {% endif %}
+            </div>
         </div>
     </div>
+
 {% endblock %}

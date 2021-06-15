@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop  - Orders {% endblock %}
+
+{% block body %}
+
+<style>
+.order-row {cursor:pointer;}
+</style>
+
+
+<h1 class='text-center display-4'>Your orders</h1>
+<hr class='w-100' />
+<div class='row'>
+    <div class='col-sm-12'>
+        {% if orders is not empty or status is not empty %}
+        <table class='table table-hover'>
+            <thead class='thead-dark'>
+                <th>#</th>
+                <th>Name</th>
+                <th>Order Price</th>
+                <th>
+                <div class="dropdown">
+                    <a class="dropdown-toggle text-white" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Order Date
+                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{path('orders', { pg: page, ord:'odd', sts:status })}}">Newest</a>
+                            <a class="dropdown-item" href="{{path('orders', { pg: page, ord:'oda', sts:status })}}">Oldest</a>
+                    </div>
+                </div>
+                </th>
+                <th>
+                    <div class="dropdown">
+                    <a class="dropdown-toggle text-white" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Status
+                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for key , row in constant("App\\Entity\\Order::orderManageStatuses") %}
+                                <a class="dropdown-item" href="{{path('orders', { pg: page, ord:order, sts:key })}}">{{ row }}</a>
+                            {% endfor %}
+                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:order })}}">ALL</a>
+                    </div>
+                </div>
+                </th>
+                <th>
+                <div class="dropdown">
+                    <a class="dropdown-toggle text-white" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Status Date
+                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{path('orders', { pg: page, ord:'sdd', sts:status  })}}">Newest</a>
+                            <a class="dropdown-item" href="{{path('orders', { pg: page, ord:'sda', sts:status  })}}">Oldest</a>
+                    </div>
+                </div>
+                </th>
+            </thead>
+            <tbody>
+            {% for o in orders %}
+                <tr class='order-row' onclick="window.location = '{{  path('order', {id: o.id}) }}'">
+                <td class='align-middle'> {{ loop.index }} </td>
+                <td class='align-middle'> {{ o.clientName }} </td>
+                <td class='align-middle'> {{ o.OrderSum }}$ </td>
+                <td class='align-middle'> {{ o.createdDate|date }} </td>
+                <td class='align-middle'> {{ (constant("App\\Entity\\Order::orderStatuses")[o.status])  }} </td>
+                <td class='align-middle'> {{ o.statusDate|date }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+            <div class="text-center mt-5">
+            {% if page-1 > 0 %}
+            <a href="{{ path('orders', { pg: (page - 1), ord: order, sts:status } ) }}" class='btn btn-secondary'><<</a>
+            {% else %}
+            <a href="{{ path('orders', { pg: (page - 1), ord: order, sts:status  } ) }}" class='btn btn-secondary disabled'><<</a>    
+            {% endif %}
+            <span class='mx-2'>{{ page }}</span>
+            {% if maxpages > page %}
+            <a href="{{ path('orders', { pg: (page + 1), ord: order, sts:status  } ) }}" class='btn btn-secondary'>>></a>
+            {% else %}
+            <a href="{{ path('orders', { pg: (page + 1), ord: order, sts:status  } ) }}" class='btn btn-secondary disabled'>>></a> 
+            {% endif %}
+            </div>
+        {% else %}
+            <h3 class='text-danger text-center mt-4 display-4'>You don't have any orders</h3>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Currency;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -20,22 +22,29 @@ class Product
     /**
      * @ORM\Column(type="string", length=150)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min:8)]
     private $name;
 
     /**
      * @ORM\Column(type="text")
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min:20)]
     private $description;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
+
+    #[Assert\NotNull]
     private $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Assert\NotNull]
     private $category;
 
     /**

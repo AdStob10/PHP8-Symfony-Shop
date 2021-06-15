@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop  - Cart {% endblock %}
+
+{% block body %}
+
+<style>
+.image-wrapper {max-width: 200px; max-height:200px;}
+</style>
+
+<h1 class='text-center display-4'>Your cart</h1>
+<hr class='w-100' />
+ {{ form_start(form) }}
+ {% if cart.items.count > 0 %}
+    <div class='mb-3'>
+        {{ form_widget(form.change, {'attr': {'class': 'btn btn-info'}}) }}
+        {{ form_widget(form.clear, {'attr': {'class': 'btn btn-warning'}}) }}
+    </div>
+ {% endif %}
+ 
+<div class='row'>
+{{ form_row(form._token) }}
+    <div class='col-sm-12 table-responsive text-center'>
+        {% if cart.items.count > 0 %}
+        <table class='table table-hover'>
+            <thead class='thead-dark'>
+                <th>#</th>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+            {% for item in form.items %}
+                <tr>
+                <td class='align-middle'>{{loop.index}}</td>
+                <td class='align-middle text-center'>
+                {% if item.vars.data.product is not null %}
+                    <a href='{{  path('product', {id: item.vars.data.product.id, name: item.vars.data.product.name}) }}'>
+                        {% if item.vars.data.product.imageFileName is empty %}
+                            <img src="{{ asset('img/products/no-image.png')}}" class="image-wrapper" >
+                        {% else %}
+                            <img src="{{ asset('img/products/' ~ item.vars.data.product.imageFileName)}}" class="image-wrapper" >
+                        {% endif %}
+                    </a>
+                {% else %}
+                <img src="{{ asset('img/products/no-image.png')}}" class="image-wrapper" >
+                {% endif %}
+                </td>
+                <td class='align-middle'>
+                {% if item.vars.data.product is not null %}
+                <a href='{{  path('product', {id: item.vars.data.product.id, name: item.vars.data.product.name }) }}' class='text-decoration-none'>{{ item.vars.data.productName }}</a>
+                {% else %}
+                {{ item.vars.data.productName }}
+                {% endif %}
+                </td>
+                <td class='align-middle'>{{ item.vars.data.priceProduct }}$</td>
+                <td class='align-middle'>
+                    <div class='w-25 d-block mx-auto'>
+                    {{ form_widget(item.quantity) }}
+                    </div>
+                </td>
+                <td class='align-middle'>{{ item.vars.data.Sum  }}$</td>
+                <td class='align-middle'>
+                    {{ form_widget(item.action, {'label': 'Remove', 'attr':{'class':'btn btn-danger'}}) }}
+                </td>
+                </tr>
+            {% endfor %}
+                <tr>
+                <td class='align-middle'></td>
+                <td class='align-middle text-center'></td>
+                <td class='align-middle'></td>
+                <td class='align-middle'></td>
+                <td class='align-middle'>Total</td>
+                <td class='align-middle'>{{ cart.OrderSum  }}$</td>
+                <td class='align-middle'></td>
+                </tr>
+            </tbody>
+        </table>
+        <a href='{{ path('create_order', {id: cart.id})}}' class='btn btn-secondary'>New order</a>
+        {% else %}
+            <h3 class='text-danger text-center mt-4 display-4'>Empty cart</h3>
+        {% endif %}
+    </div>
+
+
+</div>
+{% endblock %}

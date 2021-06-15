@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Shop  - Orders {% endblock %}
+
+{% block body %}
+
+<style>
+.clickable {cursor:pointer;}
+</style>
+
+
+<h1 class='text-center display-4'>Manage orders</h1>
+<hr class='w-100' />
+ {{ form_start(form) }}
+    {% if orders is not empty %}
+     {{ form_row(form.change) }}
+    {% endif %}
+{{ form_row(form._token) }}
+<div class='row'>
+    <div class='col-sm-12'>
+        {% if orders is not empty or status is not empty %}
+        <table class='table table-hover'>
+            <thead class='thead-dark'>
+                <th>#</th>
+                <th>Name</th>
+                <th>Order Price</th>
+                <th>
+                 <div class="dropdown">
+                    <a class="dropdown-toggle text-white" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Order Date
+                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:'odd', sts:status  })}}">Newest</a>
+                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:'oda', sts:status })}}">Oldest</a>
+                    </div>
+                </div>
+                </th>
+                <th>
+                    <div class="dropdown">
+                    <a class="dropdown-toggle text-white" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Status
+                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for key , row in constant("App\\Entity\\Order::orderManageStatuses") %}
+                                <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:order, sts:key })}}">{{ row }}</a>
+                            {% endfor %}
+                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:order })}}">ALL</a>
+                    </div>
+                </th>
+                <th>
+                 <div class="dropdown">
+                    <a class="dropdown-toggle text-white" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Status Date
+                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:'sdd', sts:status })}}">Newest</a>
+                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:'sda', sts:status  })}}">Oldest</a>
+                    </div>
+                </div>
+                </th>
+                <th>User</th>
+            </thead>
+            <tbody>
+            {% for item in form.orders %}
+                <tr>
+                <td onclick="window.location = '{{  path('order', {id: item.vars.data.id}) }}'" class='align-middle clickable'> {{ item.vars.data.id }} </td>
+                <td onclick="window.location = '{{  path('order', {id: item.vars.data.id}) }}'" class='align-middle clickable'> {{ item.vars.data.clientName }} </td>
+                <td onclick="window.location = '{{  path('order', {id: item.vars.data.id}) }}'" class='align-middle clickable'> {{ item.vars.data.OrderSum }}$ </td>
+                <td onclick="window.location = '{{  path('order', {id: item.vars.data.id}) }}'" class='align-middle clickable'> {{ item.vars.data.createdDate|date }} </td>
+                <td class='align-middle clickable'>  {{ form_widget(item.status) }}   </td>
+                <td onclick="window.location = '{{  path('order', {id: item.vars.data.id}) }}'" class='align-middle clickable'> {{ item.vars.data.statusDate|date }} </td>
+                <td onclick="window.location = '{{  path('order', {id: item.vars.data.id}) }}'" class='align-middle clickable'> {{ item.vars.data.user.email }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center mt-5">
+            {% if page-1 > 0 %}
+            <a href="{{ path('orders', { pg: (page - 1), ord:order,  sts:status} ) }}" class='btn btn-secondary'><<</a>
+            {% else %}
+            <a href="{{ path('orders', { pg: (page - 1), ord:order,  sts:status  } ) }}" class='btn btn-secondary disabled'><<</a>    
+            {% endif %}
+            <span class='mx-2'>{{ page }}</span>
+            {% if maxpages > page %}
+            <a href="{{ path('orders', { pg: (page + 1), ord:order,  sts:status } ) }}" class='btn btn-secondary'>>></a>
+            {% else %}
+            <a href="{{ path('orders', { pg: (page + 1), ord:order,  sts:status  } ) }}" class='btn btn-secondary disabled'>>></a> 
+            {% endif %}
+            </div>
+        {% else %}
+            <h3 class='text-danger text-center mt-4 display-4'>Empty</h3>
+        {% endif %}
+    </div>
+{{ form_end(form, {render_rest: false}) }}
+</div>
+{% endblock %}
+

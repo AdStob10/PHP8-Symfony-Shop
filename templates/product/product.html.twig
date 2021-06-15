@@ -5,23 +5,43 @@
 {% block content %}
 <style>
     .title-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .image-wrapper { max-width:400px; max-height:400px;}
 </style>
 
 
-    <div>
+    <div class='ml-5'>
             <div>
-                    <img src="{{ asset('img/products/' ~ prod.imageFileName)}}"  alt="...">
+                {% if prod.imageFileName is empty %}
+                    <img src="{{ asset('img/products/no-image.png')}}"  alt="..." class='image-wrapper'>
+                {% else %}
+                    <img src="{{ asset('img/products/' ~ prod.imageFileName)}}"  alt="..." class='image-wrapper mx-auto d-block'>
+                {% endif %}
             </div>
-            <div>
+                <div>
                     <div class='text-center mb-5'>
                         <h1>{{ prod.name }}</h1>
                         <h4 class='text-muted'> {{ prod.price }}$ </h1>
-                        <a href='#' class='btn btn-outline-dark mt-3'>Add to cart</a>
+                        {% if is_granted('ROLE_CLIENT') %}
+                        <div class='d-flex justify-content-center'>
+                        {{ form_start(form, {'attr': {'class': 'form-inline mt-3 ml-5 w-50'}}) }}
+                               {{ form_widget(form.quantity ,{'attr': {'class': 'm-2 w-25'}, 'value': 1}) }}
+                               {{ form_widget(form.action ,{'attr': {'class': 'btn btn-outline-dark'}}) }}
+                        {{ form_end(form) }}
+                        </div>
+                        {% endif %}
                     </div>
-                    <div>
+                    <hr class='w-100'/>
+                    <div class='py-2'>
                         <h4 class='text-center'>Description</h4>
                         <p> {{ prod.Description }}</p>
                     </div>
+                    <hr class='w-100'/>
+                    {% if is_granted('ROLE_EMPLOYEE') %}
+                    <div class='text-center mt-5'>
+                        <a href='{{ path('edit_prod', {id: prod.id} ) }}' class = "btn btn-info">Edit Product</a>
+                        <a href='{{ path('delete_prod', {id: prod.id} ) }}' class = "btn btn-danger">Delete Product</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
     </div>
