@@ -24,6 +24,7 @@ class ProductController extends AbstractController
 {
     
     // Product details
+    // Form type for adding product to cart
     #[Route('/product/{id}-{name}', name: 'product', requirements:[ 'id' => '\d+'])]
     public function index(Product $product, Request $request, CartManagment $cartMngmt): Response
     {
@@ -56,14 +57,18 @@ class ProductController extends AbstractController
         {
             $image = $form->get('image')->getData();
 
+            // Handle adding optional image
             if($image)
             {
                 $name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // Parse name for safety
                 $safe = $slugger->slug($name);
+                // Create new unique name for file
                 $new = $safe.'_'.uniqid().'.'.$image->guessExtension();
 
                 try
                 {
+                    // Move file to images_directory - configured in services.yaml
                     $image->move(
                         $this->getParameter('images_directory'),
                         $new
@@ -106,14 +111,19 @@ class ProductController extends AbstractController
         {
             $image = $form->get('image')->getData();
 
+            // Handlie optional file edit
+            // Keep old image file in case of restore
             if($image)
             {
                 $name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // Parse name for safety
                 $safe = $slugger->slug($name);
+                // Create new unique name for file
                 $new = $safe.'_'.uniqid().'.'.$image->guessExtension();
 
                 try
                 {
+                    // Move file to images_directory - configured in services.yaml
                     $image->move(
                         $this->getParameter('images_directory'),
                         $new
@@ -152,12 +162,13 @@ class ProductController extends AbstractController
             $em->remove($product);
             $em->flush();
 
+            // Handle deleting file 
             if($product->getImageFileName() != null)
             {
                 $path = $this->getParameter('images_directory').'/'.$product->getImageFileName();
                 if($fs->exists($path))
                 {
-                    $log->info("ZNAJDUJE PLIK");
+                    $log->info("FILE FOUND - DELETE");
                     $fs->remove($path);
                 }
             }
@@ -172,6 +183,8 @@ class ProductController extends AbstractController
 
 
     // Show products from specific category
+    // Added sorting and filtering + pagination
+    // Pagination parameter - configured in services.yaml
     #[Route("/cat/{id}-{catname}/page/{!pg?1}-{ord?}",name: "category", requirements: [ 'id' => '\d+', 'pg' => '\d+', 'ord' => '[a-z]{2}'])]
     public function category(int $id, int $pg, $ord, Request $request,  ProductRepository $prodRepository, CategoryRepository $catRepository, LoggerInterface $logger): Response
     {

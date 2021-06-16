@@ -16,6 +16,7 @@ class RemoveFromCartSubscriber implements EventSubscriberInterface
         return [FormEvents::POST_SUBMIT => 'postSubmit'];
     }
 
+    // Handle removing one item form cart
     public function postSubmit(FormEvent $event):void
     {
         $form = $event->getForm();

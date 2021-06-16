@@ -28,6 +28,7 @@ class Order
     // Statuses. In PHP 8.1 we can use enums
     const orderStatuses = ['CART','ORDERED','PROCESSING','FINISHED','CANCELED'];
 
+    // Statuses for users views
     const orderManageStatuses = [1 => 'ORDERED', 2 => 'PROCESSING', 3 => 'FINISHED', 4 => 'CANCELED'];
 
     /**
@@ -138,6 +139,7 @@ class Order
         return $this->items;
     }
 
+    //  Add item - if item already exists add quantity
     public function addItem(OrderProduct $item): self
     {
 
@@ -170,6 +172,7 @@ class Order
         return $this;
     }
 
+    // Purging order/cart 
     public function removeAllItems(): self
     {
         foreach($this->getItems() as $arrItem)
@@ -228,7 +231,7 @@ class Order
         return $this;
     }
 
-
+    // Total order price
     public function getOrderSum(): ?float
     {
         $sum = 0.0;

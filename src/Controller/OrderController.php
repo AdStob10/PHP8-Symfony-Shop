@@ -21,6 +21,7 @@ class OrderController extends AbstractController
 {
 
     // Get all user orders
+    // Added sorting by date and status + pagination
     #[Route('/orders/{pg?1}-{ord?odd}/{sts?}', name: 'orders', requirements:[ 'ord' => '[a-z]{2,3}'])]
     public function index(int $pg, $ord, $sts, OrderRepository $orderRepository): Response
     {
@@ -59,7 +60,7 @@ class OrderController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            
+            // Using service to minimize code in controller method
             $order = $orderManagment->makeOrder($order);
             
             return $this->redirectToRoute('order',['id' => $order->getId()]);
@@ -70,7 +71,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    // Order page
+    // Order page ( different version for different role )
     #[Route('/order/{id}', name: 'order', requirements:['id' => '\d+'])]
     public function details(int $id, OrderRepository $orderRepository, Request $request)
     {
@@ -83,6 +84,7 @@ class OrderController extends AbstractController
         if(!$order)
             return $this->redirectToRoute('home');
 
+        // Form type for changing order status
         $form = $this->createForm(OrderStatusType::class, $order);
         $form->handleRequest($request);
 
@@ -121,6 +123,8 @@ class OrderController extends AbstractController
     }
 
     // Orders view for employee
+    // Added sorting by status and date + pagination
+    // Form for changing order status
     #[Route('/order/manageorders/{pg?1}-{ord?odd}/{sts?}', name: 'manage_orders', requirements:[ 'ord' => '[a-z]{2,3}'])]
     public function manageOrders(int $pg, $ord, $sts,  Request $request,OrderRepository $orderRepository)
     {

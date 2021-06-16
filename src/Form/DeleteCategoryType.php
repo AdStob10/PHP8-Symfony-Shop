@@ -10,6 +10,7 @@ use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+// Form - Delete category with possible product transfer
 class DeleteCategoryType extends AbstractType
 {
 

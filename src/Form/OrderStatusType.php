@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Choice;
 
+// Change order status - used by employee
 class OrderStatusType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -17,7 +17,7 @@ class UserFixture extends Fixture
         $this->encoder = $passwordEncoder;
     }
 
-
+    // Create users for app
     public function load(ObjectManager $manager)
     {
 

@@ -101,6 +101,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 
+              // Handle transfering products between categories when user decide to delete category with transfer
                 $transferCat = $form->get('categories')->getData();
 
                 if ($transferCat && $transferCat->getId() != $id)
@@ -117,7 +118,8 @@ class CategoryController extends AbstractController
     }
     
 
-    
+    // Rendering categories navigation bar
+    // Using ESI Cache for performance https://symfony.com/doc/current/http_cache/esi.html#using-esi-in-symfony2 
     public function getCategories(CategoryRepository $catRepository): Response
     {
         $cats = $catRepository->findAll();

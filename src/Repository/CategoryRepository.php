@@ -19,6 +19,7 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    // Transfer products to another category
     public function transferProducts($idFrom, $catTo)
     {
         $em = $this->getEntityManager();

@@ -11,7 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Event\RemoveFromCartSubscriber;
 use App\Event\CartRemoveAllSubscriber;
 
-
+// Cart form 
+// Collection of cart items
 class CartType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

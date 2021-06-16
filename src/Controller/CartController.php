@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends AbstractController
 {
+    // Cart page
     #[Route('/cart', name: 'cart')]
     public function index(Request $request,CartManagment $cartMngmt): Response
     {

@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
+// Form - Adding to Cart / Changing quantity in cart
 class CartItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
