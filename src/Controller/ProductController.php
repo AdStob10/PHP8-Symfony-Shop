@@ -152,12 +152,15 @@ class ProductController extends AbstractController
             $em->remove($product);
             $em->flush();
 
-           $path = $this->getParameter('images_directory').'/'.$product->getImageFileName();
-           if($fs->exists($path))
-           {
-               $log->info("ZNAJDUJE PLIK");
-               $fs->remove($path);
-           }
+            if($product->getImageFileName() != null)
+            {
+                $path = $this->getParameter('images_directory').'/'.$product->getImageFileName();
+                if($fs->exists($path))
+                {
+                    $log->info("ZNAJDUJE PLIK");
+                    $fs->remove($path);
+                }
+            }
             return $this->redirectToRoute('category', ['id' => $product->getCategory()->getId(), 'catname' => $product->getCategory()->getName()]);
         }
 

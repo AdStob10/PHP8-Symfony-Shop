@@ -39,7 +39,7 @@
                             {% for key , row in constant("App\\Entity\\Order::orderManageStatuses") %}
                                 <a class="dropdown-item" href="{{path('orders', { pg: page, ord:order, sts:key })}}">{{ row }}</a>
                             {% endfor %}
-                            <a class="dropdown-item" href="{{path('manage_orders', { pg: page, ord:order })}}">ALL</a>
+                            <a class="dropdown-item" href="{{path('orders', { pg: page, ord:order })}}">ALL</a>
                     </div>
                 </div>
                 </th>

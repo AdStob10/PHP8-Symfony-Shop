@@ -37,9 +37,9 @@ class ProductType extends AbstractType
                 'constraints' => [
                     new Image([
                         'minWidth' => '200',
-                        'maxWidth' => '600',
+                        'maxWidth' => '500',
                         'minHeight' => '200',
-                        'maxHeight' => '600'
+                        'maxHeight' => '500'
                     ])
                 ]
 
