@@ -31,6 +31,9 @@ class Order
     // Statuses for users views
     const orderManageStatuses = [1 => 'ORDERED', 2 => 'PROCESSING', 3 => 'FINISHED', 4 => 'CANCELED'];
 
+    // Payments Methods
+    const paymentMethods = ['Cash', 'Credit Card'];
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -108,6 +111,12 @@ class Order
     #[Assert\NotBlank(groups:['orderData'])]
     #[Assert\Length(min:2, groups:['orderData'])]
     private $clientCountry;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    #[Assert\NotNull(groups:['orderData'])]
+    private $paymentMethod;
 
     public function __construct()
     {
@@ -288,6 +297,18 @@ class Order
     public function setClientCountry(?string $clientCountry): self
     {
         $this->clientCountry = $clientCountry;
+
+        return $this;
+    }
+
+    public function getPaymentMethod(): ?int
+    {
+        return $this->paymentMethod;
+    }
+
+    public function setPaymentMethod(int $paymentMethod): self
+    {
+        $this->paymentMethod = $paymentMethod;
 
         return $this;
     }

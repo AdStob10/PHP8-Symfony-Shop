@@ -26,6 +26,8 @@
                 <dd class='col-sm-9'>{{ order.clientPostcode }}</dd>
                 <dt class='col-sm-3'>Total Cost</dt>
                 <dd class='col-sm-9'>{{ order.OrderSum }}$</dd>
+                <dt class='col-sm-3'>Payment method</dt>
+                <dd class='col-sm-9'>{{ (constant("App\\Entity\\Order::paymentMethods")[order.paymentMethod]) }}</dd>
                 <dt class='col-sm-3'>Status</dt>
                 {% if is_granted('ROLE_EMPLOYEE') %}
                 <dd>
