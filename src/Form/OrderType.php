@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Order;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,6 +33,10 @@ class OrderType extends AbstractType
             ->add('clientPostcode',TextType::class, [
                 'label' => 'Postcode',
                 'error_bubbling' => true
+            ])
+            ->add('acceptPolicy', CheckboxType::class,[
+                'mapped' => False,
+                'required' => True
             ])
             ->add('create', SubmitType::class,[
                 'label' => 'Make an order'

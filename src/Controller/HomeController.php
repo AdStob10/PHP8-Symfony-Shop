@@ -8,6 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+   
+    #[Route('/policy', name: 'policy')]
+    public function policy(): Response
+    {
+        return $this->render('home/policy.html.twig');
+    }
+   
     #[Route('/', name: 'home')]
     public function index(): Response
     {
