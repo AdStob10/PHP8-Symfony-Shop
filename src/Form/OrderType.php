@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 // Form for creating a new order
@@ -37,6 +38,12 @@ class OrderType extends AbstractType
             ->add('acceptPolicy', CheckboxType::class,[
                 'mapped' => False,
                 'required' => True
+            ])
+            ->add('paymentMethod',ChoiceType::class,[
+                'choices' => array_keys(Order::paymentMethods),
+                'choice_label' => function($choice, $key, $value) {
+                    return Order::paymentMethods[$value];
+                }
             ])
             ->add('create', SubmitType::class,[
                 'label' => 'Make an order'
