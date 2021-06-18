@@ -27,7 +27,8 @@ class CategoryController extends AbstractController
 
         $form = $this->createFormBuilder($cat)
                 ->add('name',TextType::class)
-                ->add('description', TextareaType::class, ['required' => false])
+                ->add('description', TextareaType::class, ['required' => false,
+                'help' => 'Description is optional'])
                 ->add('add', SubmitType::class)
                 ->getForm();
 

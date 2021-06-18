@@ -38,6 +38,7 @@ class Product
      */
 
     #[Assert\NotNull]
+    #[Assert\GreaterThanOrEqual(0)]
     private $price;
 
     /**

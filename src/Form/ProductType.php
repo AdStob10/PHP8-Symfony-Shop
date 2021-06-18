@@ -43,7 +43,8 @@ class ProductType extends AbstractType
                         'minHeight' => '200',
                         'maxHeight' => '500'
                     ])
-                ]
+                ],
+                'help' => 'Image is optional. You can skip this field and app will use placeholder image'
 
             ])
 
