@@ -58,7 +58,7 @@ class OrderController extends AbstractController
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid() && $form['acceptPolicy']->getData() == true)
         {
             // Using service to minimize code in controller method
             $order = $orderManagment->makeOrder($order);
