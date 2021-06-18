@@ -1,8 +1,0 @@
-RewriteEngine on
-RewriteBase /
-
-#RewriteCond %{HTTPS} off 
-#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ /public/$1 [L]
