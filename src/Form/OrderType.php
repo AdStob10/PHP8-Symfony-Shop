@@ -11,7 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+<<<<<<< HEAD
 
+=======
+use Symfony\Component\Validator\Constraints\IsTrue;
+>>>>>>> 01335d30e4225194afac7e90a05acd82adf2b493
 
 // Form for creating a new order
 class OrderType extends AbstractType
@@ -37,7 +41,14 @@ class OrderType extends AbstractType
             ])
             ->add('acceptPolicy', CheckboxType::class,[
                 'mapped' => False,
-                'required' => True
+                'required' => True,
+                'constraints' => [new IsTrue(['message' => 'You need to accept our policy!'])]
+            ])
+            ->add('paymentMethod',ChoiceType::class,[
+                'choices' => array_keys(Order::paymentMethods),
+                'choice_label' => function($choice, $key, $value) {
+                    return Order::paymentMethods[$value];
+                }
             ])
             ->add('paymentMethod',ChoiceType::class,[
                 'choices' => array_keys(Order::paymentMethods),
